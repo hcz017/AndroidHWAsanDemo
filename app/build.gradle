@@ -14,12 +14,37 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'arm64-v8a' // arm64-v8a、armeabi-v7a、x86_64、x86 中的一个或多个
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "arm64-v8a"
+            }
+        }
+        hwasan {
+            initWith debug
+            debuggable true
+            packagingOptions {
+                jniLibs {
+                    // Needed for wrap.sh.
+                    useLegacyPackaging = true
+                }
+            }
+            externalNativeBuild {
+                cmake {
+//                  # Can also use system or none as ANDROID_STL, but not c++_static.
+                    arguments "-DANDROID_STL=c++_shared"
+                }
+            }
+            ndk {
+                abiFilters "arm64-v8a"
+            }
         }
     }
     compileOptions {

@@ -46,3 +46,6 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
+
+target_compile_options(hellojni PUBLIC -fsanitize=hwaddress -fno-omit-frame-pointer)
+target_link_options(hellojni PUBLIC -fsanitize=hwaddress)
